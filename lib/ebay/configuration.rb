@@ -18,6 +18,13 @@ module Ebay
       self.ru_name_production_url = "https://signin.ebay.com/"
     end
 
+    def configure(settings)
+      settings.each do |key, value|
+        setter = "#{key}="
+        send(setter, value) if respond_to?(setter)
+      end
+    end
+
     def namespace
       'urn:ebay:apis:eBLBaseComponents'
     end
