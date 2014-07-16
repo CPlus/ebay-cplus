@@ -8,19 +8,61 @@ Add this line to your application's Gemfile:
 
     gem 'ebay', git: 'https://github.com/CPlus/ebay-cplus'
 
-## Usage
+## Configuration
+
+In Rails just create a file at `config/ebay.yml` with the following
+content:
+
+``` yaml
+development: &dev
+  dev_id:  ...
+  app_id:  ...
+  cert:    ...
+  ru_name: ...
+  use_sandbox: yes
+
+staging:
+  <<: *dev
+
+production: &prod
+  dev_id:  ...
+  app_id:  ...
+  cert:    ...
+  ru_name: ...
+  use_sandbox: no
+```
+
+Also, you might want to download [eBay's latest
+WSDL](http://developer.ebay.com/webservices/latest/eBaySvc.wsdl) and
+save it to `config/eBaySvc.wsdl` during development. This file will also
+be picked up automatically in a Rails application.  It's not recommended
+to do this in production as it can degrade performance of API requests.
+
+When not using the gem within a Rails app, or if you want to configure
+it manually, you can use any of the following methods:
 
 ``` ruby
-require 'ebay'
+# 1. Configure from a YAML file
+# env is only needed if YAML file contains configuration for multiple environments
+Ebay::Api.configure_from_yaml(path, env) 
 
+# 2. Configure with a hash of options
+Ebay::Api.configure dev_id: '...', app_id: '...', cert: '...',
+                    ru_name: '...', use_sandbox: true
+
+# 3. Set everything separately
 Ebay::Api.dev_id = 'your-ebay-dev-id'
 Ebay::Api.app_id = 'your-ebay-app-id'
 Ebay::Api.cert = 'your-ebay-auth-cert'
-Ebay::Api.use_sandbox = true
 Ebay::Api.ru_name = "your-ru-name"
+Ebay::Api.use_sandbox = true
+```
 
-# wsdl is optional, and only with a local copy and in development
-# otherwise it might slow down the request/response cycle
+## Usage
+
+``` ruby
+# wsdl is optional, and recommended only with a local copy and during
+# development, otherwise it might slow down the request/response cycle
 client = Ebay::Api.new wsdl: './eBaySvc.wsdl'
 
 sid = client.get_session_id
