@@ -2,6 +2,8 @@ require "savon"
 
 require "ebay/patches"
 
+require "ebay/api_helpers"
+require "ebay/api_methods"
 require "ebay/configuration"
 require "ebay/ebay_client"
 
@@ -9,6 +11,9 @@ module Ebay
   class Api
 
     extend Configuration
+
+    include ApiHelpers
+    include ApiMethods
 
     attr_reader :client
 
