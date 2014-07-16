@@ -7,6 +7,17 @@ module Ebay
 
     private
 
+    def token_credentials(token)
+      {
+        requester_credentials: {
+          '@env:mustUnderstand' => 0,
+          content!: {
+            'eBayAuthToken' => token
+          }
+        }
+      }
+    end
+
     def keyset_credentials
       {
         requester_credentials: {

@@ -33,6 +33,10 @@ module Ebay
       options[:endpoint]  ||= self.class.uri
       options[:namespace] ||= self.class.namespace
 
+      if auth_token = options.delete(:auth_token)
+        options[:soap_header] = token_credentials(auth_token)
+      end
+
       # these client options cannot be overwritten because the API
       # wrapper depends on these settings
       options.merge! convert_request_keys_to: :camelcase,

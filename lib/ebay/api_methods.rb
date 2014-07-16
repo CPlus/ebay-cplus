@@ -15,5 +15,10 @@ module Ebay
       extract_values response
     end
 
+    def get_orders(options={})
+      response = @client.call :get_orders, message: options
+      extract_values response
+    end
+
   end
 end
