@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Ebay::VERSION
   spec.authors       = ["Laszlo Bacsi"]
   spec.email         = ["lackac@lackac.hu"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Lean eBay Trading API client. It implements only a few methods of the API, the ones that we need for CollectPlus.}
+  spec.summary       = %q{Lean eBay Trading API client}
+  spec.homepage      = "https://github.com/CPlus/ebay-cplus"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
