@@ -1,3 +1,6 @@
+require 'yaml'
+require 'erb'
+
 module Ebay
   module Configuration
 
@@ -25,6 +28,11 @@ module Ebay
       end
     end
 
+    def configure_from_yaml(path, env=nil)
+      settings = load_yaml_configuration(path, env)
+      configure(settings)
+    end
+
     def namespace
       'urn:ebay:apis:eBLBaseComponents'
     end
@@ -43,6 +51,13 @@ module Ebay
 
     def ru_name_url
       using_sandbox? ? ru_name_sandbox_url : ru_name_production_url
+    end
+
+    private
+
+    def load_yaml_configuration(path, env)
+      hash_content = YAML.load(ERB.new(File.read(path)).result)
+      env ? hash_content[env] : hash_content
     end
 
   end
