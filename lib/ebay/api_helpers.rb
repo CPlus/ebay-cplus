@@ -34,11 +34,33 @@ module Ebay
     end
 
     def extract_values(api_response)
-      response = Hashie::Mash.new(api_response.body.values.first).freeze
+      response_hash = api_response.body.values.first
+      normalize_values!(response_hash)
+      response = Hashie::Mash.new(response_hash).freeze
       if response.ack != 'Success'
         raise ApiError, response.errors
       end
       response
+    end
+
+    def normalize_values!(hash)
+      hash.each do |key, value|
+        case value
+        when /^\d+$/
+          hash[key] = value.to_i
+        when /^\d*\.\d+$/
+          hash[key] = value.to_f
+        when Hash
+          if key =~ /_array$/
+            array = value.values.first
+            array = [array] unless array.is_a?(Array)
+            array.each {|item| normalize_values!(item) if item.is_a?(Hash)}
+            hash[key] = array
+          else
+            normalize_values!(value)
+          end
+        end
+      end
     end
 
   end
