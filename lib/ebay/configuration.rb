@@ -1,5 +1,6 @@
 require 'yaml'
 require 'erb'
+require 'uri'
 
 module Ebay
   module Configuration
@@ -46,7 +47,7 @@ module Ebay
     end
 
     def ru_url(session_id)
-      ru_name_url + "ws/eBayISAPI.dll?SignIn&RuName=#{self.ru_name}&SessID=#{session_id}"
+      ru_name_url + "ws/eBayISAPI.dll?SignIn&RuName=#{self.ru_name}&SessID=#{URI.escape(session_id)}"
     end
 
     def ru_name_url
