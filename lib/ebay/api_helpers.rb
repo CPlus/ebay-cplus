@@ -37,7 +37,7 @@ module Ebay
       response_hash = api_response.body.values.first
       normalize_values!(response_hash)
       response = Hashie::Mash.new(response_hash).freeze
-      if response.ack != 'Success'
+      unless ['Success', 'Warning'].include? response.ack
         raise ApiError, response.errors
       end
       response
