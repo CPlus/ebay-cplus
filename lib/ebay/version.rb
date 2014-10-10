@@ -1,3 +1,3 @@
 module Ebay
-  VERSION = "0.1.873"
+  VERSION = "0.1.875"
 end
